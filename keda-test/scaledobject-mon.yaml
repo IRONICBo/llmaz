@@ -1,0 +1,17 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: http-app-scaledobject
+  namespace: keda
+spec:
+  scaleTargetRef:
+    name: http-app
+  minReplicaCount: 1
+  maxReplicaCount: 20
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: http://prometheus-k8s.monitoring.svc.cluster.local:9090
+        metricName: prometheus_http_requests_total
+        threshold: '5'
+        query: sum(rate(prometheus_http_requests_total[1m]))

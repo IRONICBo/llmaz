@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: http-app-service
+  namespace: keda
+  annotations:
+    prometheus.io/scrape: "true"  # 告诉 Prometheus 抓取这个服务
+    prometheus.io/port: "8080"  # 服务暴露的端口
+    prometheus.io/path: "/metrics"  # Prometheus 指标路径
+spec:
+  selector:
+    app: http-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080  # 与容器中的端口一致
+  type: ClusterIP  # 内部服务类型
