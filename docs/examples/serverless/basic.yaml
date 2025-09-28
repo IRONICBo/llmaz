@@ -22,31 +22,6 @@ spec:
     configName: default
     args:
       - -fa # use flash attention
-# ---
-# apiVersion: llmaz.io/v1alpha1
-# kind: OpenModel
-# metadata:
-#   name: qwen2--5-coder
-# spec:
-#   familyName: qwen2
-#   source:
-#     modelHub:
-#       modelID: Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF
-#       filename: qwen2.5-coder-0.5b-instruct-q2_k.gguf
-# ---
-# apiVersion: inference.llmaz.io/v1alpha1
-# kind: Playground
-# metadata:
-#   name: qwen2--5-coder
-# spec:
-#   replicas: 1
-#   modelClaim:
-#     modelName: qwen2--5-coder
-#   backendRuntimeConfig:
-#     backendName: llamacpp
-#     configName: default
-#     args:
-#       - -fa # use flash attention
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
@@ -85,13 +60,6 @@ spec:
               value: qwen2-0--5b
       backendRefs:
         - name: qwen2-0--5b
-    # - matches:
-    #     - headers:
-    #         - type: Exact
-    #           name: x-ai-eg-model
-    #           value: qwen2--5-coder
-    #   backendRefs:
-    #     - name: qwen2--5-coder
 ---
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: AIServiceBackend
@@ -104,19 +72,5 @@ spec:
     name: OpenAI
   backendRef:
     name: qwen2-0--5b-lb
-    kind: Service
-    port: 8080
----
-apiVersion: aigateway.envoyproxy.io/v1alpha1
-kind: AIServiceBackend
-metadata:
-  name: qwen2--5-coder
-spec:
-  timeouts:
-    request: 3m
-  schema:
-    name: OpenAI
-  backendRef:
-    name: qwen2--5-coder-lb
     kind: Service
     port: 8080

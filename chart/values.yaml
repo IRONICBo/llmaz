@@ -5,14 +5,16 @@ controllerManager:
     - --metrics-bind-address=:8443
     - --leader-elect
     - --namespace=llmaz-system
+    - --enable-serverless
+    - --pod-ip=$(POD_IP)
     containerSecurityContext:
       allowPrivilegeEscalation: false
       capabilities:
         drop:
         - ALL
     image:
-      repository: inftyai/llmaz
-      tag: v0.1.4
+      repository: asklv/llmaz
+      tag: latest
     resources:
       limits:
         cpu: 500m
